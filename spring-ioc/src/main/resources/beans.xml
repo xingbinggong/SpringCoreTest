@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="student" class="com.xingbg.spring.ioc.pojo.Student">
+        <property name="name" value="xbg"/>
+        <property name="books">
+            <array>
+                <value>book1</value>
+                <value>book2</value>
+                <value>book3</value>
+            </array>
+        </property>
+        <property name="hobbys">
+            <list>
+                <value>play</value>
+            </list>
+        </property>
+        <property name="cards">
+            <map>
+                <entry key="card1" value="123456"/>
+                <entry key="card2" value="32455"/>
+            </map>
+        </property>
+        <property name="games">
+            <set>
+                <value>ggg</value>
+            </set>
+        </property>
+        <property name="info">
+            <props>
+                <prop key="xuehao">hahaha</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="hello" class="com.xingbg.spring.ioc.pojo.HelloImpl">
+        <!--<constructor-arg index="0" value="construct spring"/>-->
+        <!--<constructor-arg type="java.lang.String" value="construct spring"/>-->
+        <constructor-arg name="para" value="construct spring"/>
+        <!--<property name="msg" value="hello spring."/>-->
+        <property name="student" ref="student"/>
+    </bean>
+
+    <bean id="helloc" class="com.xingbg.spring.ioc.pojo.HelloImpl" c:para="ctest" scope="singleton"/>
+
+
+</beans>

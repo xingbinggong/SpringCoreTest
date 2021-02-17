@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--目标类 -->
+    <bean id="target" class="com.xingbg.spring.aop.CalculateAopImpl" />
+    <!-- 通知 advice -->
+    <bean id="beforeAspect" class="com.xingbg.spring.aop.BeforeLogAspect" />
+    <!--生成代理对象 -->
+    <bean id="targetProxy"
+          class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!--代理实现的接口 -->
+        <property name="proxyInterfaces" value="com.xingbg.spring.aop.ICalculateAop" />
+        <!--代理的目标对象 -->
+        <property name="target" ref="target" />
+        <!--用通知增强目标 -->
+        <property name="interceptorNames" value="beforeAspect" />
+        <!-- 如何生成代理，true:使用cglib; false :使用jdk动态代理 -->
+        <property name="proxyTargetClass" value="false" />
+    </bean>
+
+</beans>
