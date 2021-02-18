@@ -3,6 +3,7 @@ import com.xingbg.spring.javasql.school;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -64,5 +65,33 @@ public class JavaSqlTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 使用事务
+     */
+    @Test
+    public void addUpdateWithTransaction() {
+        String sqlAdd = "insert into school(s_name,s_grade) values(?,?)";
+        String sqlUpdate ="update school set s_name=? where s_name=?";
+        DatabaseHelper databaseHelper = new DatabaseHelper();
+        Object[] psAdd ={
+                "Transaction",
+                1
+        };
+        Object[] psUpdate= {
+                "Transaction-update",
+                "Transaction"
+        };
+
+        Connection connection = databaseHelper.getConnection();
+        try{
+            databaseHelper.executeNonQuery(connection,sqlAdd,psAdd);
+            databaseHelper.executeNonQuery(connection,sqlUpdate,psUpdate);
+            databaseHelper.commit(connection);
+        }catch (Exception ex) {
+            databaseHelper.rollback(connection);
+        }
+
     }
 }

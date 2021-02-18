@@ -1,12 +1,14 @@
 import com.xingbg.spring.javasql.school;
 import com.xingbg.spring.jdbctemplate.JdbcSchool;
+import com.xingbg.spring.jdbctemplate.SchoolSrvImpl;
+import com.xingbg.spring.jdbctemplate.service.SchoolService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +43,13 @@ public class JdbcTemplateTest {
         //使用JdbcTemplate对象的update方法进行增删改
         int i = jdbcTemplate.update("insert into school(s_name,s_grade) values(?,?)", "jdbc template 中", 2);
         System.out.println(i);
+    }
+
+    @Test
+    public void testTransaction() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("jdbctemplate.xml");
+        SchoolService schoolSrv = context.getBean("schoolSrv", SchoolService.class);
+        schoolSrv.save();
     }
 
     //针对查询一个值：String str = jdbcTemplate.queryForObject(sql, String.class);

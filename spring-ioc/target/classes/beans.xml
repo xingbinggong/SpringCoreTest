@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="student" class="com.xingbg.spring.ioc.pojo.Student">
@@ -41,4 +42,8 @@
         <!--<property name="msg" value="hello spring."/>-->
         <property name="student" ref="student"/>
     </bean>
+
+    <bean id="helloc" class="com.xingbg.spring.ioc.pojo.HelloImpl" c:para="ctest" scope="singleton"/>
+
+
 </beans>

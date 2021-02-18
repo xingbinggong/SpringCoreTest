@@ -29,6 +29,8 @@ public class DatabaseHelper {
         return connectionPool.getConnection();
     }
 
+    public void returnConnection(Connection c) { connectionPool.returnConnection(c); }
+
     public boolean executeNonQuery(String sql,Object[] parameters) {
         Connection c = null;
         PreparedStatement ps =null;
@@ -45,6 +47,51 @@ public class DatabaseHelper {
             throw new RuntimeException(e.getMessage(),e);
         } finally {
             close(null,ps,c);
+        }
+    }
+
+    /**
+     * 事务执行
+     * @param c 请从getConnection方法中获取
+     * @param sql
+     * @param parameters
+     * @return
+     */
+    public boolean executeNonQuery(Connection c,String sql,Object[] parameters){
+        PreparedStatement ps =null;
+        try {
+            c.setAutoCommit(false);
+            ps = c.prepareStatement(sql);
+            if (parameters!=null) {
+                for (int i=1;i<=parameters.length;i++) {
+                    ps.setObject(i,parameters[i-1]);
+                }
+            }
+            return ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(),e);
+        } finally {
+            close(null,ps,null);
+        }
+    }
+
+    public void commit(Connection c) {
+        try {
+            c.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(),e);
+        } finally {
+            this.returnConnection(c);
+        }
+    }
+
+    public void rollback(Connection c) {
+        try {
+            c.rollback();
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(),e);
+        } finally {
+            this.returnConnection(c);
         }
     }
 
