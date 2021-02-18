@@ -27,10 +27,6 @@
     <!--开启aop支持 proxy-target-class="false"(默认)是使用jdk的代理方式去实现，proxy-target-class="true"使用cglib-->
     <aop:aspectj-autoproxy />
 
-    <bean id="schoolSrv" class="com.xingbg.spring.jdbctemplate.SchoolSrvImpl">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
-
     <!-- 配置数据源 -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <!--数据库驱动-->
@@ -48,10 +44,17 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+
+
     <!-- 事务管理器，依赖于数据源 -->
     <bean id="txManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!--代碼聲明式事務-->
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="txManager"/>
     </bean>
     <!-- 编写通知：对事务进行增强（通知），需要编写切入点和具体执行事务的细节 -->
     <!--<tx:advice id="txAdvice" transaction-manager="txManager">-->

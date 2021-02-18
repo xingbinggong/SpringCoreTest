@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,6 +49,13 @@ public class JdbcTemplateTest {
         ApplicationContext context = new ClassPathXmlApplicationContext("jdbctemplate.xml");
         SchoolService schoolSrv = context.getBean("schoolSrv", SchoolService.class);
         schoolSrv.save();
+    }
+
+    @Test
+    public void testTransactionTemplate() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("jdbctemplate.xml");
+        SchoolService schoolSrv = context.getBean("schoolSrv", SchoolService.class);
+        schoolSrv.save2();
     }
 
     //针对查询一个值：String str = jdbcTemplate.queryForObject(sql, String.class);
