@@ -19,10 +19,14 @@ public class DatabaseHelper {
     private String user="root";
     private String password="xingbg";
 
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url,
-                user,
-                password);
+    private ConnectionPool connectionPool;
+
+    public DatabaseHelper() {
+        this.connectionPool = new ConnectionPool(3,url,user,password);
+    }
+
+    public Connection getConnection() {
+        return connectionPool.getConnection();
     }
 
     public boolean executeNonQuery(String sql,Object[] parameters) {
@@ -123,44 +127,26 @@ public class DatabaseHelper {
 
 
 
-    public void close(ResultSet rs, Statement ps, Connection ct)
-    {
+    public void close(ResultSet rs, Statement ps, Connection ct) {
         //关闭资源
-        if(rs!=null)
-        {
-            try
-            {
+        if(rs!=null) {
+            try {
                 rs.close();
             }
-            catch(SQLException e)
-            {
+            catch(SQLException e) {
                 e.printStackTrace();
             }
-            rs=null;
         }
-        if(ps!=null)
-        {
-            try
-            {
+        if(ps!=null) {
+            try {
                 ps.close();
             }
-            catch(SQLException e)
-            {
+            catch(SQLException e) {
                 e.printStackTrace();
             }
-            ps=null;
         }
-        if(null!=ct)
-        {
-            try
-            {
-                ct.close();
-            }
-            catch(SQLException e)
-            {
-                e.printStackTrace();
-            }
-            ct=null;
+        if(null!=ct) {
+            connectionPool.returnConnection(ct);
         }
     }
 
