@@ -29,6 +29,7 @@ public class ConnectionPool {
     public void init() {
         //这里恰恰不能使用try-with-resource的方式，因为这些连接都需要是"活"的，不要被自动关闭了
         try {
+            //mysql-connector-java
             Class.forName("com.mysql.jdbc.Driver");
             for (int i = 0; i < size; i++) {
                 Connection c = DriverManager.getConnection(url,user,password);
